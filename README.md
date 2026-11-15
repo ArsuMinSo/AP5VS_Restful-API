@@ -22,15 +22,21 @@ Naprogramujte RESTful API Server pomocí frameworku Spring Boot, který bude pos
 4. __Aktualizace existujícího uživatele:__ API endpoint pro aktualizaci informací o existujícím uživateli v systému. Pokud takový uživatel není nalezen, tak navrátí HTTP status kód 404 Not Found. Pokud dojde k jiné chybě, navrátí HTTP status kód 400.
 5. __Smazání uživatele:__ API endpoint pro smazání existujícího uživatele ze systému. Pokud dojde k nějaké chybě, navrátí HTTP status kód 400.
 6. __Smazání všech uživatelů:__ API endpoint, který odstraní všechny uživatele z databáze. Pokud dojde k nějaké chybě, navrátí HTTP status kód 400.
+7. __Vyhledávání uživatelů:__ API endpoint pro získání všech uživatelů, který umožňuje volitelně filtrovat výsledky podle jména, emailu nebo telefonního čísla.
+8. __Ukládání uživatelů:__ Pro ukládání uživatelských dat musíte použít databázový systém. Data nesmí být ukládána pouze do paměti aplikace.
+9. __Validace údajů uživatele:__ Před vytvořením i aktualizací musí aplikace ověřit, že jméno, email a telefonní číslo jsou platné. Při neplatných údajích vrátí HTTP status kód 400 Bad Request a data neuloží (Jméno nesmí být prázdné, email musí odpovídat standardnímu formátu `example@domain.com` a telefonní číslo musí být ve formátu `+420123456789`).
 
 | Typ požadavku | Název endpointu                      | URL adresa endpointu | Předávané parametry                          | Formát odpovědi |
 | ------------- | ------------------------------------ | -------------------- | -------------------------------------------- | --------------- |
 | GET           | Získání seznamu uživatelů            | /users               | N/A                                          | JSON            |
-| GET           | Získání informací o jednom uživateli | /getUser             | ID uživatele                                 | JSON            |
-| POST          | Vytvoření nového uživatele           | /createUser          | Data nového uživatele                        | JSON            |
-| PUT           | Aktualizace existujícího uživatele   | /editUser            | ID uživatele, Data aktualizovaného uživatele | JSON            |
-| DELETE        | Smazání uživatele                    | /deleteUser          | ID uživatele                                 | JSON            |
-| DELETE        | Smazání všech uživatelů              | /deleteAll           | N/A                                          | JSON            |
+| GET           | Vyhledání uživatelů                   | /users/search        | Volitelné query parametry name, email, phoneNumber | JSON            |
+| GET           | Získání informací o jednom uživateli | /users/{id}          | ID uživatele v cestě                         | JSON            |
+| POST          | Vytvoření nového uživatele           | /users               | Data nového uživatele                        | JSON            |
+| PUT           | Aktualizace existujícího uživatele   | /users/{id}          | ID uživatele v cestě, data uživatele v těle  | JSON            |
+| DELETE        | Smazání uživatele                    | /users/{id}          | ID uživatele v cestě                         | JSON            |
+| DELETE        | Smazání všech uživatelů              | /users               | N/A                                          | JSON            |
+
+Endpoint `/users/search` vrací všechny uživatele, pokud nejsou zadány žádné parametry. Parametry `name`, `email` a `phoneNumber` lze použít samostatně nebo společně; při kombinaci se výsledky filtrují podle všech zadaných hodnot (shoda části textu bez rozlišení velikosti písmen, u telefonu s rozlišením).
 
 >_**Poznámka:** Funkcionalitu vaší aplikace můžete manuálně otestovat pomocí nástroje cURL. https://curl.se/_ Pro získání všech uživatelů můžete použít tento příkaz: `curl -X GET http://localhost:8080/users -H 'Content-Type: application/json'`
 
@@ -69,8 +75,6 @@ class MyUser {
 Pro ukládání uživatelských dat použijte libovolný volně dostupný databázový systém (např. MySQL, PostgreSQL, H2, MongoDB atd.), který bude vaše aplikace využívat. Můžete využít například následující službu, která nabízí free hosting databází: https://aiven.io/
 
 Přístup k vaší databázi bude třeba nakonfigurovat v souboru `application.properties`, který se nachází ve složce `src/main/resources`.
-
-__Základní kostra programu se nachází v tomto repozitáři. Vaším úkolem bude implementovat všechny výše zmíněné endpointy.__
 
 >_**Poznámka:** Implementace a struktura kódu aplikace je libovolná a je zcela na vás, jak tento problém vyřešíte. Je však důležité, aby aplikace splňovala zadané požadavky._
 
