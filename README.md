@@ -38,6 +38,21 @@ Naprogramujte RESTful API Server pomocí frameworku Spring Boot, který bude pos
 
 Endpoint `/users/search` vrací všechny uživatele, pokud nejsou zadány žádné parametry. Parametry `name`, `email` a `phoneNumber` lze použít samostatně nebo společně; při kombinaci se výsledky filtrují podle všech zadaných hodnot (shoda části textu bez rozlišení velikosti písmen, u telefonu s rozlišením).
 
+### Struktura odpovědí
+
+JSON objekt uživatele obsahuje následující údaje:
+
+```json
+{
+  "id": 1,
+  "name": "Jan Novák",
+  "email": "jan@example.com",
+  "phoneNumber": "+420123456789"
+}
+```
+
+Endpointy `GET /users` a `GET /users/search` vracejí pole těchto objektů (při prázdném výsledku `[]`). Endpointy `GET /users/{id}`, `POST /users` a `PUT /users/{id}` vracejí jeden objekt uživatele. Úspěšné vytvoření vrací stav `201 Created`; hodnotu `id` přiděluje server. `DELETE /users/{id}` vrací objekt smazaného uživatele a `DELETE /users` vrací prázdné pole `[]`.
+
 >_**Poznámka:** Funkcionalitu vaší aplikace můžete manuálně otestovat pomocí nástroje cURL. https://curl.se/_ Pro získání všech uživatelů můžete použít tento příkaz: `curl -X GET http://localhost:8080/users -H 'Content-Type: application/json'`
 
 ### Datová struktura uživatele
