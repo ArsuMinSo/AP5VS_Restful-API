@@ -1,6 +1,6 @@
 package utb.fai.RESTAPIServer;
 
-
+// Database entity representing a user in the system
 public class MyUser {
 
     private Long id;
