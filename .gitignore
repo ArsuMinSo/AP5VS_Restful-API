@@ -1,8 +1,12 @@
 .gradle
 build
+bin
+data
 .vscode
 .DS_Store
 *.mv.db
 *.trace.db
 *.lock.db
 pid-list.txt
+natt-logs
+test_report.html
